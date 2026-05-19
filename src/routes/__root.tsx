@@ -7,10 +7,11 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import favicon from "@/assets/favicon.ico";
 import { Toaster } from "@/components/ui/sonner";
+import { organizationJsonLd, SITE_DESCRIPTION, SITE_NAME, websiteJsonLd } from "@/lib/seo";
 
 import appCss from "../styles.css?url";
-
 
 function NotFoundComponent() {
   return (
@@ -74,18 +75,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hope Trust — Medical Support & Education | Vellore" },
-      { name: "description", content: "Hope Trust is a charitable trust in Katpadi, Vellore providing medical support, education and community welfare. Volunteer or donate today." },
-      { property: "og:title", content: "Hope Trust — Medical Support & Education" },
-      { property: "og:description", content: "Charitable trust providing medical support, education and welfare in Vellore." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "application-name", content: SITE_NAME },
+      { name: "apple-mobile-web-app-title", content: SITE_NAME },
+      { name: "theme-color", content: "#0973d2" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:locale", content: "en_IN" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: favicon, type: "image/x-icon" },
+      { rel: "shortcut icon", href: favicon, type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -94,12 +100,52 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([organizationJsonLd, websiteJsonLd]),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What is Hope Trust Vellore?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: SITE_DESCRIPTION,
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Where is Hope Trust located?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Hope Trust is located at First Floor, No. 91, K.R. Complex, Vallimalai Road, Kumarappan Nagar, KRS Nagar, Katpadi, Vellore, Tamil Nadu 632007.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How can I contact Hope Trust Vellore?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "You can contact Hope Trust Vellore by phone or WhatsApp at +91 88255 00905.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body>
         {children}
@@ -119,4 +165,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

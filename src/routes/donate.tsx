@@ -8,14 +8,16 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { HeartHandshake } from "lucide-react";
+import { pageSeo } from "@/lib/seo";
 
 export const Route = createFileRoute("/donate")({
-  head: () => ({
-    meta: [
-      { title: "Donate — Hope Trust" },
-      { name: "description", content: "Support Hope Trust's medical and education programmes. Every contribution reaches a family in need." },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Donate to Hope Trust Vellore | Support Medical & Education Programmes",
+      description:
+        "Donate to Hope Trust Vellore to support medical care, village health camps, education sponsorship and welfare support for families in need.",
+      path: "/donate",
+    }),
   component: DonatePage,
 });
 
@@ -54,7 +56,9 @@ function DonatePage() {
     }
     setSubmitting(true);
     setTimeout(() => {
-      toast.success(`Thank you for pledging ₹${amount.toLocaleString("en-IN")}! We'll email payment details.`);
+      toast.success(
+        `Thank you for pledging ₹${amount.toLocaleString("en-IN")}! We'll email payment details.`,
+      );
       (e.target as HTMLFormElement).reset();
       setSubmitting(false);
     }, 600);
@@ -64,8 +68,12 @@ function DonatePage() {
     <Layout>
       <section className="bg-hero-gradient">
         <div className="container mx-auto px-4 py-20 max-w-4xl">
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">Donate</p>
-          <h1 className="font-display text-5xl md:text-6xl text-balance">Your kindness, multiplied.</h1>
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">
+            Donate
+          </p>
+          <h1 className="font-display text-5xl md:text-6xl text-balance">
+            Your kindness, multiplied.
+          </h1>
           <p className="text-lg text-muted-foreground mt-6 max-w-2xl">
             Every contribution to Hope Trust goes directly into medical care, classrooms and
             community welfare. Pick an amount — we'll handle the rest.
@@ -74,7 +82,10 @@ function DonatePage() {
       </section>
 
       <section className="container mx-auto px-4 py-16 grid lg:grid-cols-[1fr_360px] gap-10 items-start max-w-6xl">
-        <form onSubmit={onSubmit} className="bg-card border border-border rounded-3xl p-8 md:p-10 space-y-6 order-2 lg:order-1">
+        <form
+          onSubmit={onSubmit}
+          className="bg-card border border-border rounded-3xl p-8 md:p-10 space-y-6 order-2 lg:order-1"
+        >
           <div>
             <Label className="mb-3 block">Choose an amount (₹)</Label>
             <div className="flex flex-wrap gap-2 mb-3">
@@ -102,16 +113,18 @@ function DonatePage() {
           <div>
             <Label className="mb-3 block">Direct my donation to</Label>
             <div className="flex flex-wrap gap-2">
-              {["Where most needed", "Medical Support", "Education", "Women & Elder Care"].map((p) => (
-                <button
-                  type="button"
-                  key={p}
-                  onClick={() => setPurpose(p)}
-                  className={`px-4 py-2 rounded-full text-sm border transition-colors ${purpose === p ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border hover:border-primary/50"}`}
-                >
-                  {p}
-                </button>
-              ))}
+              {["Where most needed", "Medical Support", "Education", "Women & Elder Care"].map(
+                (p) => (
+                  <button
+                    type="button"
+                    key={p}
+                    onClick={() => setPurpose(p)}
+                    className={`px-4 py-2 rounded-full text-sm border transition-colors ${purpose === p ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border hover:border-primary/50"}`}
+                  >
+                    {p}
+                  </button>
+                ),
+              )}
             </div>
           </div>
 
@@ -130,17 +143,31 @@ function DonatePage() {
           <Button type="submit" size="lg" className="w-full rounded-full" disabled={submitting}>
             {submitting ? "Processing…" : `Pledge ₹${amount.toLocaleString("en-IN")}`}
           </Button>
-          <p className="text-xs text-muted-foreground text-center">After submission, our team will share bank / UPI details by email.</p>
+          <p className="text-xs text-muted-foreground text-center">
+            After submission, our team will share bank / UPI details by email.
+          </p>
         </form>
 
         <aside className="bg-primary text-primary-foreground rounded-3xl p-8 space-y-5 order-1 lg:order-2 lg:sticky lg:top-28">
           <HeartHandshake className="size-9" />
           <h3 className="font-display text-2xl">Where your gift goes</h3>
           <ul className="space-y-3 text-sm text-primary-foreground/85">
-            <li><strong className="text-primary-foreground">₹500</strong> — A week's medicine for an elderly patient</li>
-            <li><strong className="text-primary-foreground">₹1,000</strong> — School supplies for one child</li>
-            <li><strong className="text-primary-foreground">₹2,500</strong> — A village medical camp slot</li>
-            <li><strong className="text-primary-foreground">₹10,000</strong> — A child's school fees for a term</li>
+            <li>
+              <strong className="text-primary-foreground">₹500</strong> — A week's medicine for an
+              elderly patient
+            </li>
+            <li>
+              <strong className="text-primary-foreground">₹1,000</strong> — School supplies for one
+              child
+            </li>
+            <li>
+              <strong className="text-primary-foreground">₹2,500</strong> — A village medical camp
+              slot
+            </li>
+            <li>
+              <strong className="text-primary-foreground">₹10,000</strong> — A child's school fees
+              for a term
+            </li>
           </ul>
           <div className="text-xs text-primary-foreground/70 border-t border-white/20 pt-4">
             Hope Trust · Reg. No. B4/28/2026 · Katpadi, Vellore
@@ -151,10 +178,23 @@ function DonatePage() {
   );
 }
 
-function Field({ label, name, type = "text", required }: { label: string; name: string; type?: string; required?: boolean }) {
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name}>{label}{required && <span className="text-destructive"> *</span>}</Label>
+      <Label htmlFor={name}>
+        {label}
+        {required && <span className="text-destructive"> *</span>}
+      </Label>
       <Input id={name} name={name} type={type} required={required} maxLength={120} />
     </div>
   );

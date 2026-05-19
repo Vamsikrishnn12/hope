@@ -19,10 +19,6 @@ export function Header() {
       <div className="container mx-auto px-4 flex items-center justify-between h-20">
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="Hope Trust" className="h-12 w-auto" />
-          <div className="hidden sm:block leading-tight">
-            <div className="font-display text-lg font-bold text-primary">HOPE TRUST</div>
-            <div className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">Medical Support &amp; Education</div>
-          </div>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           {links.map((l) => (
@@ -59,7 +55,9 @@ export function Header() {
               </Link>
             ))}
             <Button asChild className="rounded-full">
-              <Link to="/donate" onClick={() => setOpen(false)}>Donate</Link>
+              <Link to="/donate" onClick={() => setOpen(false)}>
+                Donate
+              </Link>
             </Button>
           </div>
         </div>

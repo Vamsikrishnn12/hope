@@ -5,17 +5,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { pageSeo } from "@/lib/seo";
 
 export const Route = createFileRoute("/volunteer")({
-  head: () => ({
-    meta: [
-      { title: "Volunteer — Hope Trust" },
-      { name: "description", content: "Join Hope Trust as a volunteer for medical camps, education and community outreach in Vellore." },
-    ],
-  }),
+  head: () =>
+    pageSeo({
+      title: "Volunteer with Hope Trust Vellore | Medical Camps & Community Outreach",
+      description:
+        "Join Hope Trust Vellore as a volunteer for medical camps, education support, women and elder care, administration and community outreach in Vellore.",
+      path: "/volunteer",
+    }),
   component: VolunteerPage,
 });
 
@@ -29,14 +32,22 @@ const schema = z.object({
   message: z.string().trim().max(500).optional(),
 });
 
-const AREAS = ["Medical Camps", "Education", "Women & Elder Care", "Community Outreach", "Administration"];
+const AREAS = [
+  "Medical Camps",
+  "Education",
+  "Women & Elder Care",
+  "Community Outreach",
+  "Administration",
+];
 
 function VolunteerPage() {
   const [interests, setInterests] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   function toggle(area: string) {
-    setInterests((prev) => (prev.includes(area) ? prev.filter((a) => a !== area) : [...prev, area]));
+    setInterests((prev) =>
+      prev.includes(area) ? prev.filter((a) => a !== area) : [...prev, area],
+    );
   }
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -55,21 +66,36 @@ function VolunteerPage() {
       toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
       return;
     }
+
+    const message = [
+      "New volunteer application - Hope Trust",
+      `Name: ${parsed.data.name}`,
+      `Email: ${parsed.data.email}`,
+      `Phone: ${parsed.data.phone}`,
+      `City: ${parsed.data.city}`,
+      `Interests: ${parsed.data.interests.join(", ")}`,
+      `Availability: ${parsed.data.availability || "Not provided"}`,
+      `Message: ${parsed.data.message || "Not provided"}`,
+    ].join("\n");
+
     setSubmitting(true);
-    setTimeout(() => {
-      toast.success("Thank you! We'll be in touch soon.");
-      (e.target as HTMLFormElement).reset();
-      setInterests([]);
-      setSubmitting(false);
-    }, 600);
+    window.open(createWhatsAppUrl(message), "_blank", "noopener,noreferrer");
+    toast.success("Opening WhatsApp with your application.");
+    e.currentTarget.reset();
+    setInterests([]);
+    setSubmitting(false);
   }
 
   return (
     <Layout>
       <section className="bg-hero-gradient">
         <div className="container mx-auto px-4 py-20 max-w-4xl">
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">Volunteer</p>
-          <h1 className="font-display text-5xl md:text-6xl text-balance">Give a few hours. Change a story.</h1>
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">
+            Volunteer
+          </p>
+          <h1 className="font-display text-5xl md:text-6xl text-balance">
+            Give a few hours. Change a story.
+          </h1>
           <p className="text-lg text-muted-foreground mt-6 max-w-2xl">
             Doctors, teachers, students, retirees — every pair of willing hands counts. Tell us a
             little about you and we'll match you with a programme.
@@ -78,7 +104,10 @@ function VolunteerPage() {
       </section>
 
       <section className="container mx-auto px-4 py-16 max-w-3xl">
-        <form onSubmit={onSubmit} className="bg-card border border-border rounded-3xl p-8 md:p-10 space-y-6">
+        <form
+          onSubmit={onSubmit}
+          className="bg-card border border-border rounded-3xl p-8 md:p-10 space-y-6"
+        >
           <div className="grid md:grid-cols-2 gap-5">
             <Field label="Full name" name="name" required />
             <Field label="Email" name="email" type="email" required />
@@ -109,12 +138,21 @@ function VolunteerPage() {
 
           <div className="space-y-2">
             <Label htmlFor="message">Why do you want to volunteer?</Label>
-            <Textarea id="message" name="message" rows={4} maxLength={500} placeholder="Tell us a little about yourself…" />
+            <Textarea
+              id="message"
+              name="message"
+              rows={4}
+              maxLength={500}
+              placeholder="Tell us a little about yourself…"
+            />
           </div>
 
           <div className="flex items-start gap-2">
             <Checkbox id="consent" required />
-            <Label htmlFor="consent" className="text-sm text-muted-foreground font-normal leading-snug">
+            <Label
+              htmlFor="consent"
+              className="text-sm text-muted-foreground font-normal leading-snug"
+            >
               I agree to be contacted by Hope Trust about volunteering opportunities.
             </Label>
           </div>
@@ -128,10 +166,23 @@ function VolunteerPage() {
   );
 }
 
-function Field({ label, name, type = "text", required }: { label: string; name: string; type?: string; required?: boolean }) {
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={name}>{label}{required && <span className="text-destructive"> *</span>}</Label>
+      <Label htmlFor={name}>
+        {label}
+        {required && <span className="text-destructive"> *</span>}
+      </Label>
       <Input id={name} name={name} type={type} required={required} maxLength={120} />
     </div>
   );
