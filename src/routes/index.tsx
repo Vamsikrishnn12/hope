@@ -187,9 +187,6 @@ function HomePage() {
           <Button asChild size="lg" variant="outline" className="rounded-full px-7">
             <Link to="/volunteer">Volunteer</Link>
           </Button>
-          <Button asChild size="lg" variant="ghost" className="rounded-full px-7">
-            <Link to="/contact">Contact us</Link>
-          </Button>
         </div>
       </section>
     </Layout>

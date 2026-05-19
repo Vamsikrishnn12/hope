@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import favicon from "@/assets/favicon.ico";
+import { SiteLoader } from "@/components/SiteLoader";
 import { Toaster } from "@/components/ui/sonner";
 import { organizationJsonLd, SITE_DESCRIPTION, SITE_NAME, websiteJsonLd } from "@/lib/seo";
 
@@ -160,6 +161,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <SiteLoader />
       <Outlet />
       <Toaster position="top-right" richColors />
     </QueryClientProvider>
