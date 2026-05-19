@@ -89,15 +89,19 @@ function ContactPage() {
         </form>
 
         <aside className="space-y-4">
-          <InfoCard icon={<MapPin className="size-5" />} title="Visit us">
-            No. 91, K.R. Complex,<br />Vallimalai Road, Kumarappan Nagar,<br />Katpadi, Vellore – 632 007
-          </InfoCard>
+          <a href="https://maps.app.goo.gl/jiKyDZm3U3EfHq5C7" target="_blank" rel="noopener noreferrer" className="block">
+            <InfoCard icon={<MapPin className="size-5" />} title="Visit us">
+              First Floor, No. 91, K.R. Complex,<br />Vallimalai Road, opposite Vinayagar Temple,<br />Kumarappan Nagar, KRS Nagar,<br />Katpadi, Vellore, Tamil Nadu 632007
+            </InfoCard>
+          </a>
           <InfoCard icon={<Mail className="size-5" />} title="Email">
             contact@hopetrust.org
           </InfoCard>
-          <InfoCard icon={<Phone className="size-5" />} title="Phone">
-            +91 00000 00000
-          </InfoCard>
+          <a href="tel:+918825500905" className="block">
+            <InfoCard icon={<Phone className="size-5" />} title="Phone">
+              +91 88255 00905<br />+91 94427 56140
+            </InfoCard>
+          </a>
         </aside>
       </section>
     </Layout>

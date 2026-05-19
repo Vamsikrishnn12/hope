@@ -26,9 +26,10 @@ export function Footer() {
         <div>
           <h4 className="font-display text-lg mb-3">Contact</h4>
           <ul className="space-y-3 text-sm text-primary-foreground/80">
-            <li className="flex gap-2"><MapPin className="size-4 shrink-0 mt-0.5" /> No. 91, K.R. Complex, Vallimalai Road, Kumarappan Nagar, Katpadi, Vellore – 632 007</li>
+            <li className="flex gap-2"><MapPin className="size-4 shrink-0 mt-0.5" /> <a href="https://maps.app.goo.gl/jiKyDZm3U3EfHq5C7" target="_blank" rel="noopener noreferrer" className="hover:text-white">First Floor, No. 91, K.R. Complex, Vallimalai Road, opposite Vinayagar Temple, Kumarappan Nagar, KRS Nagar, Katpadi, Vellore, Tamil Nadu 632007</a></li>
             <li className="flex gap-2"><Mail className="size-4" /> contact@hopetrust.org</li>
-            <li className="flex gap-2"><Phone className="size-4" /> +91 00000 00000</li>
+            <li className="flex gap-2"><Phone className="size-4" /> <a href="tel:+918825500905" className="hover:text-white">+91 88255 00905</a></li>
+            <li className="flex gap-2"><Phone className="size-4" /> <a href="tel:+919442756140" className="hover:text-white">+91 94427 56140</a></li>
           </ul>
         </div>
         <div>
