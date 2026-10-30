@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import president from "@/assets/president.png";
-import { pageSeo } from "@/lib/seo";
+import president from "@/assets/president-optimized.jpg";
+import { StructuredData } from "@/components/StructuredData";
+import { breadcrumbJsonLd, pageSeo, webPageJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   head: () =>
@@ -18,6 +19,29 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   return (
     <Layout>
+      <StructuredData
+        data={[
+          webPageJsonLd({
+            path: "/about",
+            name: "About Hope Trust Vellore",
+            description:
+              "Learn about Hope Trust, its mission, leadership and community work in Katpadi and Vellore.",
+            type: "AboutPage",
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "Dr. Lavanya Jayakumar",
+            jobTitle: "President, Hope Trust",
+            worksFor: { "@id": "https://hopetrustvellore.in/#organization" },
+            knowsAbout: ["Physiotherapy", "Rehabilitation", "Community health outreach"],
+          },
+        ]}
+      />
       <section className="bg-hero-gradient">
         <div className="container mx-auto px-4 py-20 max-w-4xl">
           <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">

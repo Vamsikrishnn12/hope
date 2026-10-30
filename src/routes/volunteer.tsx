@@ -9,7 +9,8 @@ import { createWhatsAppUrl } from "@/lib/whatsapp";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { pageSeo } from "@/lib/seo";
+import { StructuredData } from "@/components/StructuredData";
+import { breadcrumbJsonLd, pageSeo, webPageJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/volunteer")({
   head: () =>
@@ -88,6 +89,20 @@ function VolunteerPage() {
 
   return (
     <Layout>
+      <StructuredData
+        data={[
+          webPageJsonLd({
+            path: "/volunteer",
+            name: "Volunteer with Hope Trust Vellore",
+            description:
+              "Volunteer for medical support, education, family welfare, outreach and administration with Hope Trust in Vellore.",
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Volunteer", path: "/volunteer" },
+          ]),
+        ]}
+      />
       <section className="bg-hero-gradient">
         <div className="container mx-auto px-4 py-20 max-w-4xl">
           <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">

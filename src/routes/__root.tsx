@@ -10,7 +10,7 @@ import {
 import favicon from "@/assets/favicon.ico";
 import { SiteLoader } from "@/components/SiteLoader";
 import { Toaster } from "@/components/ui/sonner";
-import { organizationJsonLd, SITE_DESCRIPTION, SITE_NAME, websiteJsonLd } from "@/lib/seo";
+import { organizationJsonLd, SITE_NAME, websiteJsonLd } from "@/lib/seo";
 
 import appCss from "../styles.css?url";
 
@@ -79,7 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "application-name", content: SITE_NAME },
       { name: "apple-mobile-web-app-title", content: SITE_NAME },
       { name: "theme-color", content: "#0973d2" },
-      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "color-scheme", content: "light dark" },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
       { property: "og:site_name", content: SITE_NAME },
       { property: "og:locale", content: "en_IN" },
     ],
@@ -87,6 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: favicon, type: "image/x-icon" },
       { rel: "shortcut icon", href: favicon, type: "image/x-icon" },
+      { rel: "sitemap", href: "/sitemap.xml", type: "application/xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -103,48 +108,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <head>
         <HeadContent />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([organizationJsonLd, websiteJsonLd]),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "What is Hope Trust Vellore?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: SITE_DESCRIPTION,
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Where is Hope Trust located?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Hope Trust is located at First Floor, No. 91, K.R. Complex, Vallimalai Road, Kumarappan Nagar, KRS Nagar, Katpadi, Vellore, Tamil Nadu 632007.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How can I contact Hope Trust Vellore?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "You can contact Hope Trust Vellore by phone or WhatsApp at +91 88255 00905.",
-                  },
-                },
-              ],
-            }),
           }}
         />
       </head>

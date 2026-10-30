@@ -1,30 +1,20 @@
 import { useEffect, useState } from "react";
-import { Gift, MapPin, X } from "lucide-react";
+import { Check, Copy, Gift, Landmark, MapPin, MessageCircle, ShieldCheck, X } from "lucide-react";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { BANK_DETAILS, DONATION_ACCOUNT } from "@/lib/donation";
 import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const WHATSAPP_NUMBER = "918825500905";
 const MAPS_URL = "https://maps.app.goo.gl/jiKyDZm3U3EfHq5C7";
 const PRESETS = [500, 1000, 2500, 5000];
 
-const donateSchema = z.object({
-  name: z.string().trim().min(2, "Please enter your name").max(80),
-  phone: z.string().trim().min(7, "Please enter a valid phone number").max(20),
-  amount: z.number().int().min(100, "Minimum donation is Rs.100").max(10000000),
-  note: z.string().trim().max(300).optional(),
-});
-
 export function FloatingActions() {
   const [showDonate, setShowDonate] = useState(false);
   const [donateOpen, setDonateOpen] = useState(false);
   const [amount, setAmount] = useState(1000);
-  const [submitting, setSubmitting] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -35,39 +25,24 @@ export function FloatingActions() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  function onDonateSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const parsed = donateSchema.safeParse({
-      name: fd.get("name"),
-      phone: fd.get("phone"),
-      amount,
-      note: fd.get("note") ?? "",
-    });
-
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Please check the donation form");
-      return;
+  async function copyValue(label: string, value: string) {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(label);
+      toast.success(`${label} copied`);
+      window.setTimeout(() => setCopied(null), 1800);
+    } catch {
+      toast.error(`Could not copy ${label.toLowerCase()}. Please select it manually.`);
     }
-
-    const message = [
-      "New donation pledge - Hope Trust",
-      `Name: ${parsed.data.name}`,
-      `Phone: ${parsed.data.phone}`,
-      `Amount: Rs.${parsed.data.amount.toLocaleString("en-IN")}`,
-      parsed.data.note ? `Message: ${parsed.data.note}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    setSubmitting(true);
-    window.open(createWhatsAppUrl(message), "_blank", "noopener,noreferrer");
-    toast.success("Opening WhatsApp with your donation details.");
-    e.currentTarget.reset();
-    setAmount(1000);
-    setSubmitting(false);
-    setDonateOpen(false);
   }
+
+  const receiptMessage = [
+    "Hello Hope Trust, I would like to donate by bank transfer.",
+    `Planned amount: Rs.${amount.toLocaleString("en-IN")}`,
+    "Name:",
+    "Transaction reference:",
+    "Please help me verify the donation and receive a receipt.",
+  ].join("\n");
 
   return (
     <>
@@ -76,7 +51,7 @@ export function FloatingActions() {
           <button
             type="button"
             onClick={() => setDonateOpen(true)}
-            aria-label="Open donation form"
+            aria-label="Open donation details"
             className="flex min-h-44 w-14 items-center justify-center rounded-l-[2rem] bg-primary px-3 py-6 text-primary-foreground shadow-2xl transition-transform hover:-translate-x-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <span className="[writing-mode:vertical-rl] rotate-180 text-sm font-extrabold uppercase tracking-[0.28em]">
@@ -88,41 +63,42 @@ export function FloatingActions() {
 
       {showDonate && (
         <aside
-          className={`fixed right-0 top-1/2 z-[60] w-[min(92vw,380px)] -translate-y-1/2 rounded-l-2xl border border-r-0 border-border bg-card p-5 text-card-foreground shadow-2xl transition-transform duration-300 ${
+          className={`fixed right-0 top-1/2 z-[60] max-h-[calc(100dvh-1.5rem)] w-[min(94vw,430px)] -translate-y-1/2 overflow-y-auto rounded-l-3xl border border-r-0 border-border bg-card text-card-foreground shadow-2xl transition-transform duration-300 ${
             donateOpen ? "translate-x-0" : "translate-x-[calc(100%+1rem)]"
           }`}
           aria-hidden={!donateOpen}
         >
-          <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-border bg-card/95 p-5 backdrop-blur">
             <div>
               <div className="mb-2 flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Gift className="size-5" />
               </div>
-              <h2 className="font-display text-xl font-semibold">Donate to Hope Trust</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Send your pledge details and our team will share payment options.
+              <h2 className="font-display text-2xl font-semibold">Donate to Hope Trust</h2>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                Your contribution can help a family reach medical care, keep a child learning or
+                meet an urgent need with dignity.
               </p>
             </div>
             <button
               type="button"
               onClick={() => setDonateOpen(false)}
-              aria-label="Close donation form"
-              className="grid size-9 shrink-0 place-items-center rounded-full border border-border bg-background text-foreground transition-colors hover:bg-accent"
+              aria-label="Close donation details"
+              className="grid size-10 shrink-0 place-items-center rounded-full border border-border bg-background text-foreground transition-colors hover:bg-accent"
             >
               <X className="size-4" />
             </button>
           </div>
 
-          <form onSubmit={onDonateSubmit} className="space-y-4">
+          <div className="space-y-5 p-5">
             <div>
-              <Label className="mb-2 block">Amount</Label>
-              <div className="mb-2 grid grid-cols-2 gap-2">
+              <p className="mb-2 text-sm font-semibold">Choose a contribution</p>
+              <div className="grid grid-cols-2 gap-2">
                 {PRESETS.map((preset) => (
                   <button
                     type="button"
                     key={preset}
                     onClick={() => setAmount(preset)}
-                    className={`rounded-full border px-3 py-2 text-sm font-semibold transition-colors ${
+                    className={`rounded-full border px-3 py-2.5 text-sm font-semibold transition-colors ${
                       amount === preset
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-background hover:border-primary/60"
@@ -132,36 +108,68 @@ export function FloatingActions() {
                   </button>
                 ))}
               </div>
-              <Input
-                type="number"
-                min={100}
-                max={10000000}
-                value={amount}
-                onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                required
-              />
+              <p className="mt-2 text-xs text-muted-foreground">
+                Every amount matters. Transfer any amount directly through your banking app.
+              </p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="floating-donor-name">Name *</Label>
-                <Input id="floating-donor-name" name="name" required maxLength={80} />
+            <div className="overflow-hidden rounded-2xl border border-border">
+              <div className="flex items-center gap-3 bg-primary/5 px-4 py-3">
+                <Landmark className="size-5 text-primary" />
+                <div>
+                  <p className="font-display font-semibold">Bank transfer details</p>
+                  <p className="text-xs text-muted-foreground">NEFT · IMPS · RTGS</p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="floating-donor-phone">Phone *</Label>
-                <Input id="floating-donor-phone" name="phone" required maxLength={20} />
-              </div>
+              <dl className="divide-y divide-border">
+                {BANK_DETAILS.map((detail) => (
+                  <div
+                    key={detail.label}
+                    className="grid grid-cols-[112px_1fr_auto] items-center gap-2 px-4 py-3 text-sm"
+                  >
+                    <dt className="text-xs text-muted-foreground">{detail.label}</dt>
+                    <dd className="break-all font-semibold">{detail.value}</dd>
+                    {"copy" in detail && detail.copy ? (
+                      <button
+                        type="button"
+                        onClick={() => copyValue(detail.label, detail.value)}
+                        aria-label={`Copy ${detail.label}`}
+                        className="grid size-8 place-items-center rounded-full border border-border bg-background text-primary hover:bg-primary/5"
+                      >
+                        {copied === detail.label ? (
+                          <Check className="size-3.5" />
+                        ) : (
+                          <Copy className="size-3.5" />
+                        )}
+                      </button>
+                    ) : (
+                      <span />
+                    )}
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="floating-donor-note">Message</Label>
-              <Textarea id="floating-donor-note" name="note" rows={3} maxLength={300} />
+            <div className="flex gap-3 rounded-2xl border border-primary/15 bg-primary/5 p-4">
+              <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Before transferring, confirm that your bank shows the beneficiary as{" "}
+                <strong className="text-foreground">{DONATION_ACCOUNT.accountName}</strong>. Never
+                share your OTP, PIN or banking password.
+              </p>
             </div>
 
-            <Button type="submit" className="w-full rounded-full" disabled={submitting}>
-              {submitting ? "Sending..." : "Send donation pledge"}
+            <Button asChild className="w-full rounded-full" size="lg">
+              <a href={createWhatsAppUrl(receiptMessage)} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="size-4" />
+                Send donation details
+              </a>
             </Button>
-          </form>
+            <p className="text-center text-xs text-muted-foreground">
+              After transferring, send your transaction reference so our team can verify it and
+              assist with your receipt.
+            </p>
+          </div>
         </aside>
       )}
 

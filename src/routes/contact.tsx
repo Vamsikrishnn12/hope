@@ -9,7 +9,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { MapPin, Phone } from "lucide-react";
-import { pageSeo } from "@/lib/seo";
+import { StructuredData } from "@/components/StructuredData";
+import { breadcrumbJsonLd, pageSeo, webPageJsonLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   head: () =>
@@ -60,6 +61,21 @@ function ContactPage() {
 
   return (
     <Layout>
+      <StructuredData
+        data={[
+          webPageJsonLd({
+            path: "/contact",
+            name: "Contact Hope Trust Vellore",
+            description:
+              "Contact Hope Trust in Katpadi, Vellore about donations, volunteering, partnerships and community support.",
+            type: "ContactPage",
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Contact", path: "/contact" },
+          ]),
+        ]}
+      />
       <section className="bg-hero-gradient">
         <div className="container mx-auto px-4 py-20 max-w-4xl">
           <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary mb-3">
