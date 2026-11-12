@@ -13,7 +13,7 @@ import {
   Stethoscope,
   Users,
 } from "lucide-react";
-import medical from "@/assets/medical.jpg";
+const medical = "/child-medical-support.jpeg";
 import education from "@/assets/education.jpg";
 import familySupport from "@/assets/family-support-illustration.jpg";
 import communityCare from "@/assets/community-care-illustration.jpg";
