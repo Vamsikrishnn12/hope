@@ -7,6 +7,8 @@ export const DONATION_ACCOUNT = {
   branch: "Kalpudur, Vellore",
 } as const;
 
+export const DONATION_QR_CODE = "/Hope_Trust_QR_Code.png";
+
 export const BANK_DETAILS = [
   { label: "Account name", value: DONATION_ACCOUNT.accountName },
   { label: "Bank", value: DONATION_ACCOUNT.bank },

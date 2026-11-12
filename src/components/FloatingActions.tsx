@@ -3,7 +3,7 @@ import { Check, Copy, Gift, Landmark, MapPin, MessageCircle, ShieldCheck, X } fr
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { BANK_DETAILS, DONATION_ACCOUNT } from "@/lib/donation";
+import { BANK_DETAILS, DONATION_ACCOUNT, DONATION_QR_CODE } from "@/lib/donation";
 import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const WHATSAPP_NUMBER = "918825500905";
@@ -148,6 +148,19 @@ export function FloatingActions() {
                   </div>
                 ))}
               </dl>
+              <div className="border-t border-border bg-background p-4 text-center">
+                <p className="mb-3 text-sm font-semibold">Pay by QR code</p>
+                <img
+                  src={DONATION_QR_CODE}
+                  alt="Hope Trust donation payment QR code"
+                  className="mx-auto size-40 rounded-lg object-contain"
+                  width={512}
+                  height={512}
+                />
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Scan with your banking or UPI app.
+                </p>
+              </div>
             </div>
 
             <div className="flex gap-3 rounded-2xl border border-primary/15 bg-primary/5 p-4">

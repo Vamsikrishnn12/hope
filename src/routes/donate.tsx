@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { createWhatsAppUrl } from "@/lib/whatsapp";
-import { BANK_DETAILS } from "@/lib/donation";
+import { BANK_DETAILS, DONATION_QR_CODE } from "@/lib/donation";
 import { StructuredData } from "@/components/StructuredData";
 import { absoluteUrl, breadcrumbJsonLd, pageSeo, webPageJsonLd } from "@/lib/seo";
 import {
@@ -152,6 +152,23 @@ function DonatePage() {
                 </div>
               ))}
             </dl>
+
+            <div className="mx-6 mt-6 flex flex-col items-center gap-5 rounded-2xl border border-border bg-background p-5 sm:mx-8 sm:flex-row sm:items-center">
+              <img
+                src={DONATION_QR_CODE}
+                alt="Hope Trust donation payment QR code"
+                className="size-44 rounded-lg object-contain"
+                width={512}
+                height={512}
+              />
+              <div className="text-center sm:text-left">
+                <h3 className="font-display text-xl">Pay by QR code</h3>
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                  Scan this QR code with your banking or UPI app to make a donation. Please verify
+                  the payment details in your app before confirming.
+                </p>
+              </div>
+            </div>
 
             <div className="m-6 md:m-8 rounded-2xl border border-primary/15 bg-primary/5 p-5 flex gap-3">
               <ShieldCheck className="size-5 text-primary shrink-0 mt-0.5" />

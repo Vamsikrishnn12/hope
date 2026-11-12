@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, HeartHandshake, Landmark, MapPin, Phone, ShieldCheck } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { DONATION_ACCOUNT } from "@/lib/donation";
+import { DONATION_ACCOUNT, DONATION_QR_CODE } from "@/lib/donation";
 
 export function Footer() {
   return (
@@ -132,6 +132,16 @@ export function Footer() {
             <FooterDetail label="Type" value={DONATION_ACCOUNT.accountType} />
             <FooterDetail label="Branch" value={DONATION_ACCOUNT.branch} />
           </dl>
+          <div className="mt-4 flex items-center gap-3 rounded-xl bg-white p-3 text-primary">
+            <img
+              src={DONATION_QR_CODE}
+              alt="Hope Trust donation payment QR code"
+              className="size-24 shrink-0 rounded-md object-contain"
+              width={512}
+              height={512}
+            />
+            <p className="text-sm font-semibold">Scan to donate using your banking or UPI app.</p>
+          </div>
           <Link
             to="/donate"
             className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white hover:gap-3 transition-all"
