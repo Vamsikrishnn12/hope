@@ -37,7 +37,7 @@ export const Route = createFileRoute("/")({
 
 const focusAreas = [
   {
-    img: medical,
+    img: communityCare,
     icon: Stethoscope,
     tag: "Health",
     title: "Medical support",
