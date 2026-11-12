@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import education from "@/assets/education.jpg";
+import medical from "@/assets/medical.jpg";
 import community from "@/assets/community.jpg";
 import communityCare from "@/assets/community-care-illustration.jpg";
 import familySupport from "@/assets/family-support-illustration.jpg";
@@ -36,7 +37,7 @@ export const Route = createFileRoute("/")({
 
 const focusAreas = [
   {
-    img: "/child-medical-support.jpeg",
+    img: medical,
     icon: Stethoscope,
     tag: "Health",
     title: "Medical support",
