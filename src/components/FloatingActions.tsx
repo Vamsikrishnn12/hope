@@ -153,7 +153,7 @@ export function FloatingActions() {
                 <img
                   src={DONATION_QR_CODE}
                   alt="Hope Trust donation payment QR code"
-                  className="mx-auto size-40 rounded-lg object-contain"
+                  className="mx-auto size-48 rounded-lg object-contain"
                   width={512}
                   height={512}
                 />

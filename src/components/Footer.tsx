@@ -136,7 +136,7 @@ export function Footer() {
             <img
               src={DONATION_QR_CODE}
               alt="Hope Trust donation payment QR code"
-              className="size-24 shrink-0 rounded-md object-contain"
+              className="size-28 shrink-0 rounded-md object-contain"
               width={512}
               height={512}
             />

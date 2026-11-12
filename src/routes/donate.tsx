@@ -157,7 +157,7 @@ function DonatePage() {
               <img
                 src={DONATION_QR_CODE}
                 alt="Hope Trust donation payment QR code"
-                className="size-44 rounded-lg object-contain"
+                className="size-52 rounded-lg object-contain"
                 width={512}
                 height={512}
               />
